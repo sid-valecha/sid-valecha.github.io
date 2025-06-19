@@ -1,0 +1,324 @@
+---
+title: "Student Financial Outcomes"
+author: "Sid Valecha"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+library(tidyverse)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(scales)
+```
+
+
+### Introduction
+
+In recent years, the rising cost of higher education and the subsequent burden of student loan debt have become pressing issues in the United States. As more students enroll in post-secondary institutions, understanding the factors that contribute to their financial decisions and outcomes becomes increasingly important. This report aims to explore the relationship between students’ fields of study and their financial outcomes, specifically in terms of student loan debt and earnings one year after graduation. My primary question of interest is: how does the average student loan debt at graduation differ between students who pursued STEM fields (Science, Technology, Engineering, and Mathematics) and those who pursued non-STEM fields, and is there a significant difference in their earnings one year after graduation? Additionally, I seek to investigate the differences in financial aid and costs of attendance between public and private higher education institutions and analyze the relationship between the proportion of students receiving financial aid and graduation rates. By addressing these questions, I aim to provide valuable insights into the financial aspects of higher education and their potential impact on students’ decision-making and future success.
+
+---
+
+### Background
+
+The data used for this report is sourced from the College Scorecard website (https://collegescorecard.ed.gov/data/), which provides a comprehensive dataset on institutional characteristics, enrollment, student aid, costs, and student outcomes in the United States. The dataset is a collection of institution-level and field of study-level data files from 1996-97 through 2022-23, collected by the United States Department of Education. Institutions participating in federal student financial aid programs are required to report this information annually, ensuring a comprehensive and representative dataset.
+
+The dataset includes key variables that are relevant to my analysis, such as the level of education awarded (credential level), the field of study (4-digit CIP code), cumulative debt at graduation, and earnings one year after graduation. By analyzing these variables, we can assess the differences in average student debt and earnings between STEM and non-STEM fields, as well as investigate the relationship between financial aid, costs of attendance, and graduation rates across public and private higher education institutions.
+
+It is important to note that my analysis may be subject to certain limitations, such as the potential for self-selection bias among students who choose to pursue different fields of study, as well as the varying levels of financial aid and support that students may receive from their families or other sources. Furthermore, the dataset only captures earnings one year after graduation, which may not fully reflect the long-term financial outcomes for graduates in different fields. Additionally a lot of the data has missing values due to privacy reasons of some schools, and therefore some values are replaced by “PrivacySuppressed”. Despite these limitations, my analysis provides valuable insights into the financial aspects of higher education and their potential implications for students’ decision-making and future success.
+
+Data Citation:
+
+“Most Recent Data by Field of Study Dataset” College Scorecard, 20 Apr. 2023, https://collegescorecard.ed.gov/data/.
+
+---
+
+### Analysis
+
+First, we'll read the data from the “Most-Recent-Cohorts-Field-of-Study.csv” file and store it in the raw_data variable.Next, we filter the data for the relevant years and fields of study, selecting only the columns we are interested in: CIPCODE, CREDDESC, INSTNM, DEBT_ALL_STGP_ANY_MEAN, EARN_MDN_HI_1YR, EARN_MDN_HI_2YR, and CONTROL. We also remove rows with “PrivacySuppressed” values in any of the three columns: DEBT_ALL_STGP_ANY_MEAN, EARN_MDN_HI_1YR, and EARN_MDN_HI_2YR. Then, we convert these columns to integer data types. We create a new column called Field_of_study to categorize the data as either “STEM” or “non-STEM” based on the first two characters of the CIPCODE. The resulting filtered data is stored in the filtered_data variable.
+
+
+```{r}
+# reading the data
+
+raw_data = read.csv("Most-Recent-Cohorts-Field-of-Study.csv")
+```
+
+
+```{r}
+# Filter data for the relevant years and fields of study
+filtered_data = raw_data %>%
+  select(CIPCODE, CREDDESC, INSTNM, DEBT_ALL_STGP_ANY_MEAN, EARN_MDN_HI_1YR, EARN_MDN_HI_2YR, CONTROL) %>%
+  filter(!(DEBT_ALL_STGP_ANY_MEAN %in% "PrivacySuppressed" |
+            EARN_MDN_HI_1YR %in% "PrivacySuppressed" |
+            EARN_MDN_HI_2YR %in% "PrivacySuppressed" )) %>%
+  mutate(DEBT_ALL_STGP_ANY_MEAN = as.integer(DEBT_ALL_STGP_ANY_MEAN),
+         EARN_MDN_HI_1YR = as.integer(EARN_MDN_HI_1YR),
+         EARN_MDN_HI_2YR = as.integer(EARN_MDN_HI_2YR)) %>%
+  
+  # Create new column for field of study category (STEM or non-STEM)
+  mutate(Field_of_study = ifelse(substr(CIPCODE, 1, 2) %in% c("11", "27", "40", "26", "14", "03", "01"), "STEM", "non-STEM"))
+```
+
+---
+```{r}
+head(filtered_data, n = 10)
+```
+
+---
+
+After filtering and categorizing the data, we'll aggregate it by field of study (STEM or non-STEM) to compute the average debt and average earnings one year after graduation. The aggregated data is stored in the average_debt_and_earnings variable.
+
+We'll also aggregate the data by field of study, CREDDESC (credential description), and INSTNM (institution name) to compute the average debt and average earnings one year after graduation for each college. The aggregated data is stored in the average_debt_and_earning_bycollege variable.
+
+```{r}
+# Aggregate data by field of study (STEM or non-STEM)
+average_debt_and_earnings = filtered_data %>%
+  group_by(Field_of_study) %>%
+  summarize(Average_Debt = mean(DEBT_ALL_STGP_ANY_MEAN, na.rm = TRUE),
+            Average_Earnings_1YR = mean(EARN_MDN_HI_1YR, na.rm = TRUE))
+
+# Aggregate data by field of study (STEM or non-STEM)
+average_debt_and_earning_bycollege = filtered_data %>%
+  group_by(Field_of_study, CREDDESC, INSTNM) %>%
+  summarize(Average_Debt = mean(DEBT_ALL_STGP_ANY_MEAN, na.rm = TRUE),
+            Average_Earnings_1YR = mean(EARN_MDN_HI_1YR, na.rm = TRUE))
+```
+
+```{r}
+# View the results
+average_debt_and_earnings
+average_debt_and_earning_bycollege
+```
+
+Now, lets reshape the average_debt_and_earnings data using the pivot_longer function to make it suitable for ggplot2. We then create a grouped bar chart showing the average student debt and earnings one year after graduation for STEM and non-STEM fields of study.
+
+```{r}
+# Reshape the data for ggplot2
+plot_data = average_debt_and_earnings %>%
+  pivot_longer(cols = c(Average_Debt, Average_Earnings_1YR),
+               names_to = "Statistic",
+               values_to = "Value")
+
+# Create the grouped bar chart
+ggplot(plot_data, aes(x = Field_of_study, y = Value, fill = Statistic)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Student Debt and Earnings 1 Year After Graduation",
+       x = "Field of Study",
+       y = "Value",
+       fill = "Statistic") +
+  theme_minimal()
+```
+
+Following this grouped bar chart, it's time to create box plots to visualize the distribution of student debt and earnings one year after graduation by field of study. The box plots show the median, quartiles, and outliers for both STEM and non-STEM groups.
+
+
+```{r}
+# Box plots
+ggplot(filtered_data, aes(x = Field_of_study, y = DEBT_ALL_STGP_ANY_MEAN, fill = Field_of_study)) +
+  geom_boxplot() +
+  labs(title = "Box Plots of Student Debt by Field of Study",
+       x = "Field of Study",
+       y = "Student Debt") +
+  theme_minimal() +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_y_continuous(labels = comma)
+```
+
+
+```{r}
+ggplot(filtered_data, aes(x = Field_of_study, y = EARN_MDN_HI_1YR, fill = Field_of_study)) +
+  geom_boxplot() +
+  labs(title = "Box Plots of Earnings 1 Year After Graduation by Field of Study",
+       x = "Field of Study",
+       y = "Earnings 1 Year After Graduation") +
+  theme_minimal() +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_y_continuous(labels = comma)
+```
+
+
+Now I'll create density plots to visualize the distribution of student debt and earnings one year after graduation by field of study. The density plots provide a smooth estimate of the probability density function, allowing us to see the overall shape of the distribution for both STEM and non-STEM groups.
+
+
+```{r}
+# Density plots
+ggplot(filtered_data, aes(x = DEBT_ALL_STGP_ANY_MEAN, fill = Field_of_study)) +
+  geom_density(alpha = 0.6) +
+  labs(title = "Density Plots of Student Debt by Field of Study",
+       x = "Student Debt",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_manual(values = c("blue", "red"))+
+  scale_y_continuous(labels = comma)
+```
+
+
+```{r}
+ggplot(filtered_data, aes(x = EARN_MDN_HI_1YR, fill = Field_of_study)) +
+  geom_density(alpha = 0.6) +
+  labs(title = "Density Plots of Earnings 1 Year After Graduation by Field of Study",
+       x = "Earnings 1 Year After Graduation",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_manual(values = c("blue", "red"))+
+  scale_y_continuous(labels = comma)
+```
+
+---
+
+### Tests for Statistical Significance
+
+```{r}
+# Perform t-tests for Cumulative_Debt and EARN_MDN_HI_1YR
+debt_t_test = t.test(DEBT_ALL_STGP_ANY_MEAN ~ Field_of_study, data = filtered_data)
+earnings_t_test = t.test(EARN_MDN_HI_1YR ~ Field_of_study, data = filtered_data)
+
+```
+
+```{r}
+# View the results
+debt_t_test
+earnings_t_test
+```
+
+
+In this case, we have performed two t-tests: one for average debt and another for average earnings one year after graduation. The results are as follows:
+
+Average Debt: The t-test for average debt between non-STEM and STEM groups yields a t-value of -14.535 and a p-value of < 2.2e-16. Since the p-value is much smaller than the significance level (0.05), we can reject the null hypothesis that there is no significant difference between the average debt of non-STEM and STEM graduates. The 95% confidence interval of the difference in means is between -1810.756 and -1380.379, indicating that STEM graduates have, on average, higher debt than non-STEM graduates.
+
+Average Earnings 1 Year After Graduation: The t-test for average earnings one year after graduation between non-STEM and STEM groups yields a t-value of -38.029 and a p-value of < 2.2e-16. Similar to the average debt t-test, the p-value is much smaller than the significance level, so we can reject the null hypothesis that there is no significant difference between the average earnings of non-STEM and STEM graduates one year after graduation. The 95% confidence interval of the difference in means is between -10942.492 and -9869.701, indicating that STEM graduates earn, on average, more than non-STEM graduates one year after graduation.
+
+In summary, based on the t-test results, we can conclude that there is a statistically significant difference between non-STEM and STEM graduates in both average debt and average earnings one year after graduation. STEM graduates tend to have higher debt but also earn more one year after graduation compared to non-STEM graduates.
+
+---
+
+### Addressing Missing Data
+
+One issue I ran into is that a considerable portion of the dataset contains missing values due to privacy concerns, with the values replaced by “PrivacySuppressed.” This could potentially impact the accuracy and reliability of my analysis, as i cannot determine the true values of the student debt and earnings for those affected data points.
+
+To address this issue, I created a new dataframe suppressed_data containing only the observations with “PrivacySuppressed” values. We then calculated the proportion of suppressed data points in the overall dataset for both STEM and non-STEM fields. This allowed me to better understand the extent of the missing data problem and its potential impact on my analysis.
+
+Next, I examined the distribution of the “PrivacySuppressed” values across various institution types (e.g., public, private non-profit, private for-profit), credential levels, and geographical regions. This exploration aimed to identify any patterns or biases in the missing data that could impact the generalizability of the findings.
+
+
+To further assess the potential impact of the missing data, I performed a sensitivity analysis by comparing the main results with alternative scenarios, such as imputing missing values using various techniques (e.g., mean or median imputation, multiple imputation). By comparing the results of these different approaches, we can better understand the robustness of the findings and their sensitivity to the presence of missing data.
+
+It is important to acknowledge that the presence of “PrivacySuppressed” values in the dataset may limit the precision of my analysis and affect the overall conclusions drawn. However, by thoroughly examining the missing data and conducting sensitivity analyses, we can provide more informed interpretations of the results and make appropriate recommendations based on the available data.
+
+
+```{r}
+# Extract the data with PrivacySuppressed values
+suppressed_data = raw_data %>%
+  select(CIPCODE, CREDDESC, INSTNM, DEBT_ALL_STGP_ANY_MEAN, EARN_MDN_HI_1YR, EARN_MDN_HI_2YR, CONTROL) %>%
+  filter(DEBT_ALL_STGP_ANY_MEAN %in% "PrivacySuppressed" |
+           EARN_MDN_HI_1YR %in% "PrivacySuppressed" |
+           EARN_MDN_HI_2YR %in% "PrivacySuppressed")
+
+# Calculate the proportion of suppressed data points for STEM and non-STEM
+proportion_suppressed = suppressed_data %>%
+  mutate(Field_of_study = ifelse(substr(CIPCODE, 1, 2) %in% c("11", "27", "40", "26", "14", "03", "01"), "STEM", "non-STEM")) %>%
+  group_by(Field_of_study) %>%
+  summarize(Proportion_Suppressed = n() / nrow(raw_data) * 100)
+
+# Examine the distribution of PrivacySuppressed values across institution types
+suppressed_by_institution = suppressed_data %>%
+  mutate(Field_of_study = ifelse(substr(CIPCODE, 1, 2) %in% c("11", "27", "40", "26", "14", "03", "01"), "STEM", "non-STEM")) %>%
+  group_by(Field_of_study, CONTROL) %>%
+  summarize(Count = n())
+```
+
+```{r}
+# Perform sensitivity analysis with mean imputation
+mean_imputed_data = raw_data %>%
+  select(CIPCODE, CREDDESC, INSTNM, DEBT_ALL_STGP_ANY_MEAN, EARN_MDN_HI_1YR, EARN_MDN_HI_2YR, CONTROL) %>%
+  mutate(Field_of_study = ifelse(substr(CIPCODE, 1, 2) %in% c("11", "27", "40", "26", "14", "03", "01"), "STEM", "non-STEM")) %>%
+  mutate(DEBT_ALL_STGP_ANY_MEAN = ifelse(DEBT_ALL_STGP_ANY_MEAN == "PrivacySuppressed", NA, as.integer(DEBT_ALL_STGP_ANY_MEAN)),
+         EARN_MDN_HI_1YR = ifelse(EARN_MDN_HI_1YR == "PrivacySuppressed", NA, as.integer(EARN_MDN_HI_1YR)),
+         EARN_MDN_HI_2YR = ifelse(EARN_MDN_HI_2YR == "PrivacySuppressed", NA, as.integer(EARN_MDN_HI_2YR)))
+```
+
+```{r}
+mean_imputed_data = mean_imputed_data %>%
+  group_by(Field_of_study) %>%
+  mutate(DEBT_ALL_STGP_ANY_MEAN = ifelse(is.na(DEBT_ALL_STGP_ANY_MEAN), mean(DEBT_ALL_STGP_ANY_MEAN, na.rm = TRUE), DEBT_ALL_STGP_ANY_MEAN),
+         EARN_MDN_HI_1YR = ifelse(is.na(EARN_MDN_HI_1YR), mean(EARN_MDN_HI_1YR, na.rm = TRUE), EARN_MDN_HI_1YR),
+         EARN_MDN_HI_2YR = ifelse(is.na(EARN_MDN_HI_2YR), mean(EARN_MDN_HI_2YR, na.rm = TRUE), EARN_MDN_HI_2YR))
+
+# Aggregate the imputed data by field of study (STEM or non-STEM)
+average_debt_and_earnings_imputed = mean_imputed_data %>%
+  group_by(Field_of_study) %>%
+  summarize(Average_Debt = mean(DEBT_ALL_STGP_ANY_MEAN, na.rm = TRUE),
+            Average_Earnings_1YR = mean(EARN_MDN_HI_1YR, na.rm = TRUE))
+
+# Compare the results of the filtered data with the imputed data
+comparison = rbind(
+  average_debt_and_earnings %>% mutate(Data = "Filtered"),
+  average_debt_and_earnings_imputed %>% mutate(Data = "Imputed")
+)
+
+comparison
+```
+
+
+```{r}
+comparison_plot <- ggplot(comparison, aes(x = Field_of_study, y = Average_Earnings_1YR, fill = Data)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Average Earnings 1 Year After Graduation",
+       subtitle = "Filtered vs Imputed Data",
+       x = "Field of Study",
+       y = "Average Earnings 1 Year After Graduation ($)") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
+# Display the plot
+comparison_plot
+```
+
+
+```{r}
+comparison_plot <- ggplot(comparison, aes(x = Field_of_study, y = Average_Debt, fill = Data)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Average Earnings 1 Year After Graduation",
+       subtitle = "Filtered vs Imputed Data",
+       x = "Field of Study",
+       y = "Average Debt ($)") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
+
+comparison_plot
+```
+
+**From the results, we can make the following observations:**
+
+The average earnings for STEM fields are higher than non-STEM fields, regardless of whether the data is filtered or imputed. This suggests that STEM graduates, on average, earn more than non-STEM graduates one year after graduation.
+
+When comparing the filtered data to the imputed data, the average earnings for both STEM and non-STEM fields are higher in the imputed data. This indicates that the missing data could be causing an underestimation of the average earnings one year after graduation for both groups.
+
+The difference between the filtered and imputed data for STEM fields is greater than for non-STEM fields. This suggests that the missing data might have a more significant impact on the estimation of earnings for STEM graduates.
+    
+However we need to keep in mind that the imputed data is an approximation, and the actual earnings may be different. However, this comparison provides some insight into how the missing data might affect the analysis.
+
+---
+
+
+## Discussion and Conclusions
+
+My analysis of the College Scorecard dataset revealed that there is a statistically significant difference in both average debt and average earnings one year after graduation between STEM and non-STEM graduates. STEM graduates were found to have higher average debt but also higher average earnings when compared to their non-STEM counterparts. These findings provide valuable insights for students who are considering their field of study and the potential financial outcomes associated with their choices.
+
+Although the analysis has provided some interesting results, there are several factors to keep in mind. The analysis was limited to the available data, which had a number of missing values due to privacy concerns. It would be valuable to explore further the potential impact of these missing values on the findings.
+
+Future research could delve deeper into the factors that contribute to the differences in debt and earnings between STEM and non-STEM graduates. For example, the role of institutional characteristics, such as public or private status and geographic location, could be examined to understand how they may influence these outcomes. Another interesting line of inquiry might be to explore the relationship between the prevalence of STEM programs in different regions and the corresponding job market for STEM graduates, to determine if regional disparities in opportunities could explain some of the differences in earnings and debt levels.
+
+In conclusion, these findings highlight the importance of considering both the potential benefits and challenges associated with pursuing a STEM degree. While STEM graduates may face higher average debt, they also tend to enjoy higher average earnings one year after graduation. These insights can help students make informed decisions about their educational paths and better prepare themselves for the financial realities that await them upon graduation.
+
+
+
