@@ -1,103 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siddharth Valecha - Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header id="hero">
-        <h1>Sid Valecha</h1>
-        <p>Data Scientist | AI/ML Engineer</p>
-    </header>
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sid Valecha - Data Scientist</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar -->
     <nav>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experiences</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+      <div class="nav-container">
+        <div class="nav-logo">SV</div>
+        <div class="nav-right">
+          <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <a href="#contact" class="hire-me-btn">Hire Me</a>
+        </div>
+      </div>
     </nav>
-    
-    <section id="about">
-        <h2>About Me</h2>
-        <p>B.S. in Data Science & Information Science, with a Certificate in Computer Sciences at the University of Wisconsin-Madison. Passionate about AI/ML, and data-driven solutions.</p>
-    </section>
-    
-    <section id="experience">
-        <h2>Experience</h2>
-        <div>
-            <h3>73 Strings - AI/ML Intern, New York, New York</h3>
-        
-                <ul>
-                    <li>Enhanced LLM-based parsers to streamline data extraction and consolidation from financial documents, reducing
-                        processing time by 30% and improving accuracy for AI-driven private equity portfolio and asset management.</li>
-                    <li>Developed and fine-tuned a YOLO-based chart detection model, boosting precision by 12% (to 93%) and recall by
-                        11% (to 94.4%), significantly improving chart classification for financial analytics.</li>
-                    <li>Trained the model on 1,700+ annotated images, achieving a mean average precision of 92.2%, while implementing hyper-
-                        parameter tuning to reduce false positives and enhance classification reliability</li>
-                    <li>Explored and proposed innovative applications of Large Language Models for portfolio management, advising the
-                        integration of these technologies into the company’s product suite, presented in a report.</li>
 
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="hero-content">
+        <p class="hero-greeting">Hello, I'm</p>
+        <h1 class="hero-name">Sid Valecha</h1>
+        <h2 class="hero-title">Data Scientist</h2>
+        <p class="hero-description">
+          Recent graduate passionate about transforming data into actionable
+          insights. Specialized in machine learning, statistical analysis, and
+          data visualization.
+        </p>
+        <div class="hero-buttons">
+          <a href="#projects" class="btn-primary">View Projects</a>
+          <a href="#contact" class="btn-secondary">Contact Me</a>
+        </div>
+        <div class="hero-social">
+          <a href="https://github.com/sid-valecha" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/sidvalecha" target="_blank" aria-label="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="mailto:sidvalecha@email.com" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        <img
+          src="https://placehold.co/500x400?text=Data+Visualization"
+          alt="Abstract data visualization"
+          class="hero-image"
+        />
+      </div>
+    </section>
 
-                </ul>
-        </div>
-        <div>
-            <h3>United Nations - AI/ML & Full Stack Intern</h3>
-            <ul>
-                <li>Developed and implemented a robust file-handling solution for a research repository website, using Node.js, Express,
-                    MongoDB, and Multer, streamlining document uploads, storage, and retrieval. Tested and validated API endpoints using
-                    Postman to ensure efficient backend performance.</li>
-                <li>Built an LLM-based Retrieval-Augmented Generation (RAG) system for a research portal, utilizing LangChain, FAISS
-                    vector storage, and Ollama embeddings to enable fast and context-aware document retrieval. Implemented a document
-                    processing pipeline to handle large-scale unstructured data for responses</li>
-                <li>Developed a rule-based chatbot for a UNICEF learning management system to resolve user login issues, automating
-                    user login issue resolution and reducing support overhead.</li>
-            </ul>
-        </div>
-    </section>
-    
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li><a href="projects/student-outcomes/StudentFinancialOutcomes.html">Analysis of Student Financial Outcomes (R)</a></li>
-            <li><a href="projects/stock-predictor/StockPricePredictor.html">Stock Price Predictions for BMW stock</a></li>
-            <li><a href="https://github.com/sid-valecha/tictactoe-minimax">Tic-Tac-Toe AI using the Minimax Algorithm</a></li>
-            <li><a href="https://github.com/sid-valecha/numpy-neural-network#">Neural Network from Scratch using NumPy</a></li>
-            <li><a href="https://sid-valecha.shinyapps.io/project/">Shiny App for Visualising Milwaukee Bucks Performance</a></li>
-            <li><a href="https://sid-valecha.shinyapps.io/stat436-hw2-shiny/">Shiny App for Video Game Sales Analysis</a></li>
-            <li><a href="https://github.com/sid-valecha/library-management-system">Library Management System using SQL and Docker</a></li>
-            <li><a href="https://github.com/sid-valecha/password-gen/tree/strength-checker">Password Generator with Strength Checker implemented using Machine Learning</a></li>
-            <li><a href="https://github.com/sid-valecha/bestselling-books-analysis">Analysis of Bestselling Books</a></li>
-        </ul>
-    </section>
-    
+    <!-- Skills Section -->
     <section id="skills">
-        <h2>Skills</h2>
-        <h3>Tools</h3>
-        <p>Git, Docker, Postman, MongoDB, MySQL, PostgreSQL, FAISS, Microsoft Excel, Tableau, AWS EC2, Jenkins,
-            Kubernetes, Jira, Trello, Elasticsearch, Kibana</p>
-        <h3>Programming and Technical skills</h3>
-            <p>Python, Java, R, SQL, RESTful APIs, Web Development (HTML, CSS, JavaScript), LLMs
-                (Transformers, OpenAI API, Groq, LangChain)</p>
-        <h3>Frameworks & Libraries</h3>
-        <p>Flask, Pandas, NumPy, TensorFlow, PyTorch, LangChain, Streamlit, Ollama Embeddings, Google
-            Generative AI Embeddings, Matplotlib, Seaborn, Scikit-learn, OpenCV, Hugging Face transformers, Ultralytics YOLO</p>
+      <h2 class="section-title">Skills & Technologies</h2>
+      <p class="section-subtitle">
+        Comprehensive toolkit for data science and machine learning projects
+      </p>
+
+      <div class="skills-grid">
+        <!-- Programming Languages -->
+        <div class="skill-card">
+          <h3 class="skill-card-title">Programming Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">R</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Java</span>
+          </div>
+        </div>
+
+        <!-- Machine Learning -->
+        <div class="skill-card">
+          <h3 class="skill-card-title">Machine Learning & AI</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Scikit-learn</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">Keras</span>
+            <span class="skill-tag">XGBoost</span>
+          </div>
+        </div>
+
+        <!-- Visualization -->
+        <div class="skill-card">
+          <h3 class="skill-card-title">Data Analysis & Visualization</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Pandas</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">Matplotlib</span>
+            <span class="skill-tag">Seaborn</span>
+            <span class="skill-tag">Plotly</span>
+            <span class="skill-tag">Tableau</span>
+            <span class="skill-tag">Power BI</span>
+          </div>
+        </div>
+
+        <!-- Big Data & Databases -->
+        <div class="skill-card">
+          <h3 class="skill-card-title">Big Data & Databases</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Spark</span>
+            <span class="skill-tag">Hadoop</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">MySQL</span>
+          </div>
+        </div>
+
+        <!-- Tools & Technologies -->
+        <div class="skill-card">
+          <h3 class="skill-card-title">Tools & Technologies</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Jupyter</span>
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">Azure</span>
+          </div>
+        </div>
+      </div>
     </section>
-    
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Email: <a href="mailto:svalecha@wisc.edu">svalecha@wisc.edu</a></p>
-        <p>Phone: +1 (848) 219-6614</p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/siddharth-valecha-22301b1b1/">linkedin.com/siddharth-valecha</a></p>
-        <p>GitHub: <a href="https://github.com/sid-valecha">github.com/sid-valecha</a></p>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-subtitle">
+        A selection of data science projects showcasing my skills in machine learning, data analysis, and visualization.
+      </p>
+
+      <div class="projects-grid">
+        <!-- Project 1 -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Student+Financial+Outcomes"
+            alt="Student Financial Outcomes Project"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Student Financial Outcomes</h3>
+            <p class="project-description">
+              Analyzed student loan debt and earnings outcomes by field of study, comparing STEM vs non-STEM fields using College Scorecard data.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">R</span>
+              <span class="project-tag">ggplot2</span>
+              <span class="project-tag">Statistical Analysis</span>
+              <span class="project-tag">Data Visualization</span>
+            </div>
+            <div class="project-buttons">
+              <a href="projects/student-outcomes/StudentFinancialOutcomes.html" class="btn-code" target="_blank">
+                <i class="fas fa-code"></i> View Project
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 - Placeholder -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Project+2"
+            alt="Project 2"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Project Title</h3>
+            <p class="project-description">
+              Project description goes here. This showcases your skills and expertise in data science.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Machine Learning</span>
+            </div>
+            <div class="project-buttons">
+              <a href="#" class="btn-code">
+                <i class="fas fa-code"></i> Code
+              </a>
+              <a href="#" class="btn-demo">
+                <i class="fas fa-external-link-alt"></i> Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 - Placeholder -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Project+3"
+            alt="Project 3"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Project Title</h3>
+            <p class="project-description">
+              Project description goes here. This showcases your skills and expertise in data science.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Data Analysis</span>
+            </div>
+            <div class="project-buttons">
+              <a href="#" class="btn-code">
+                <i class="fas fa-code"></i> Code
+              </a>
+              <a href="#" class="btn-demo">
+                <i class="fas fa-external-link-alt"></i> Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4 - Placeholder -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Project+4"
+            alt="Project 4"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Project Title</h3>
+            <p class="project-description">
+              Project description goes here. This showcases your skills and expertise in data science.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Machine Learning</span>
+            </div>
+            <div class="project-buttons">
+              <a href="#" class="btn-code">
+                <i class="fas fa-code"></i> Code
+              </a>
+              <a href="#" class="btn-demo">
+                <i class="fas fa-external-link-alt"></i> Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5 - Placeholder -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Project+5"
+            alt="Project 5"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Project Title</h3>
+            <p class="project-description">
+              Project description goes here. This showcases your skills and expertise in data science.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">R</span>
+              <span class="project-tag">Data Visualization</span>
+            </div>
+            <div class="project-buttons">
+              <a href="#" class="btn-code">
+                <i class="fas fa-code"></i> Code
+              </a>
+              <a href="#" class="btn-demo">
+                <i class="fas fa-external-link-alt"></i> Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6 - Placeholder -->
+        <div class="project-card">
+          <img
+            src="https://placehold.co/400x200?text=Project+6"
+            alt="Project 6"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Project Title</h3>
+            <p class="project-description">
+              Project description goes here. This showcases your skills and expertise in data science.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Deep Learning</span>
+            </div>
+            <div class="project-buttons">
+              <a href="#" class="btn-code">
+                <i class="fas fa-code"></i> Code
+              </a>
+              <a href="#" class="btn-demo">
+                <i class="fas fa-external-link-alt"></i> Demo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-    
+
+    <!-- Education Section -->
+    <section id="education">
+      <h2 class="section-title">Education</h2>
+
+      <div class="education-grid">
+        <!-- Education -->
+        <div class="education-card">
+          <h3 class="education-header">
+            <i class="fas fa-graduation-cap"></i>Education
+          </h3>
+          <div class="education-item">
+            <p class="education-degree">Bachelor of Science in Data Science</p>
+            <p class="education-school">University of Wisconsin-Madison</p>
+            <p class="education-details">Recent Graduate</p>
+            <ul class="education-list">
+              <li>Passionate about data analysis, machine learning, and software development</li>
+              <li>Relevant coursework: Machine Learning, Statistical Computing, Database Systems</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-subtitle">
+        I'm currently looking for new opportunities. Whether you have a
+        question or just want to say hi, feel free to reach out!
+      </p>
+
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <form class="contact-form" action="#" method="POST">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              class="form-input"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="your.email@example.com"
+              class="form-input"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea
+              name="message"
+              rows="4"
+              placeholder="Your message..."
+              class="form-textarea"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%;">
+            Send Message
+          </button>
+        </form>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div class="contact-item-content">
+              <p class="contact-item-label">Email</p>
+              <p class="contact-item-value">sidvalecha@email.com</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <div class="contact-item-content">
+              <p class="contact-item-label">Phone</p>
+              <p class="contact-item-value">Available upon request</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="contact-item-content">
+              <p class="contact-item-label">Location</p>
+              <p class="contact-item-value">Madison, WI</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Siddharth Valecha</p>
+      <p>© 2024 Sid Valecha. All rights reserved.</p>
     </footer>
-</body>
+  </body>
 </html>
