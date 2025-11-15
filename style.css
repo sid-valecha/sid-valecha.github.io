@@ -381,8 +381,16 @@ section {
   gap: 1.5rem;
 }
 
+/* Experience Section */
+.experience-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
 .education-card,
-.certification-card {
+.certification-card,
+.experience-card {
   background: var(--bg-white);
   padding: 1.5rem;
   border-radius: 0.75rem;
@@ -413,23 +421,31 @@ section {
   margin-bottom: 0;
 }
 
-.education-degree {
+.experience-item {
+  margin-bottom: 0;
+}
+
+.education-degree,
+.experience-title {
   font-weight: 600;
   margin-bottom: 0.25rem;
 }
 
-.education-school {
+.education-school,
+.experience-company {
   color: var(--accent-green);
   margin-bottom: 0.25rem;
 }
 
-.education-details {
+.education-details,
+.experience-details {
   font-size: 0.875rem;
   color: var(--text-secondary);
   margin-bottom: 0.75rem;
 }
 
-.education-list {
+.education-list,
+.experience-list {
   list-style: disc;
   margin-left: 1.25rem;
   font-size: 0.875rem;
@@ -437,7 +453,8 @@ section {
   line-height: 1.8;
 }
 
-.education-list li {
+.education-list li,
+.experience-list li {
   margin-bottom: 0.25rem;
 }
 
@@ -581,6 +598,10 @@ footer {
     grid-template-columns: 1fr;
     max-width: 600px;
     margin: 0 auto;
+  }
+
+  .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .contact-grid {
