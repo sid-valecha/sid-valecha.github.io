@@ -509,7 +509,8 @@
 
       <div class="contact-grid">
         <!-- Contact Form -->
-        <form class="contact-form" action="#" method="POST">
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify>
+          <input type="hidden" name="form-name" value="contact" />
           <div class="form-group">
             <label class="form-label">Name</label>
             <input
@@ -576,5 +577,30 @@
     <footer>
       <p>© 2025 Sid Valecha. All rights reserved.</p>
     </footer>
+
+    <!-- Netlify Form Handler -->
+    <script>
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const myForm = event.target;
+        const formData = new FormData(myForm);
+        
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString()
+        })
+          .then(() => {
+            alert("Thank you for your submission! I'll get back to you soon.");
+            myForm.reset();
+          })
+          .catch((error) => {
+            alert("There was an error submitting your form. Please try again or contact me directly at sidvalecha4@gmail.com");
+            console.error(error);
+          });
+      };
+
+      document.querySelector("form[name='contact']").addEventListener("submit", handleSubmit);
+    </script>
   </body>
 </html>
