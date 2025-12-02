@@ -580,6 +580,41 @@ footer {
   font-size: 0.875rem;
 }
 
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 25%;
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.2s ease;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+.scroll-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  background-color: var(--accent-green-dark);
+}
+
+.scroll-to-top i {
+  font-size: 0.875rem;
+}
+
 /* Responsive Design */
 @media (min-width: 768px) {
   .nav-links {
