@@ -548,6 +548,15 @@ section {
   font-size: 1.25rem;
 }
 
+.contact-item a i {
+  color: var(--accent-green);
+  transition: color 0.2s ease;
+}
+
+.contact-item a:hover i {
+  color: var(--accent-green-dark);
+}
+
 .contact-item-content {
   flex: 1;
 }
