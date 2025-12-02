@@ -292,32 +292,6 @@
           </div>
         </div>
 
-        <!-- Project 2 -->
-        <div class="project-card">
-          <img
-            src="assets/stock-cover.jpg"
-            alt="Stock Price Predictions for BMW stock"
-            class="project-image"
-          />
-          <div class="project-content">
-            <h3 class="project-title">Stock Price Predictions for BMW stock</h3>
-            <p class="project-description">
-              Machine learning model to predict BMW stock prices using time series analysis and forecasting techniques.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Machine Learning</span>
-              <span class="project-tag">Time Series</span>
-              <span class="project-tag">Stock Market</span>
-            </div>
-            <div class="project-buttons">
-              <a href="projects/stock-predictor/StockPricePredictor.html" class="btn-code" target="_blank">
-                <i class="fas fa-code"></i> View Project
-              </a>
-            </div>
-          </div>
-        </div>
-
         <!-- Project 3 -->
         <div class="project-card">
           <img
@@ -593,7 +567,9 @@
             </div>
           </div>
           <div class="contact-item">
-            <i class="fas fa-map-marker-alt"></i>
+            <a href="https://www.google.com/maps/search/?api=1&query=Madison+WI" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+              <i class="fas fa-map-marker-alt"></i>
+            </a>
             <div class="contact-item-content">
               <p class="contact-item-label">Location</p>
               <p class="contact-item-value">Madison, WI</p>
@@ -607,6 +583,11 @@
     <footer>
       <p>© 2025 Sid Valecha. All rights reserved.</p>
     </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Netlify Form Handler -->
     <script>
@@ -631,6 +612,28 @@
       };
 
       document.querySelector("form[name='contact']").addEventListener("submit", handleSubmit);
+    </script>
+
+    <!-- Scroll to Top Button Script -->
+    <script>
+      const scrollToTopBtn = document.getElementById('scrollToTop');
+      
+      // Show/hide button based on scroll position
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollToTopBtn.classList.add('show');
+        } else {
+          scrollToTopBtn.classList.remove('show');
+        }
+      });
+      
+      // Scroll to top when button is clicked
+      scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
     </script>
   </body>
 </html>
