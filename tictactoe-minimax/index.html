@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe: Human vs AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            min-height: 30px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 0;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 3px solid #333;
+            width: fit-content;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        .cell:hover:not(.disabled) {
+            background-color: #e8e8e8;
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .cell.x {
+            color: #FF0000;
+        }
+
+        .cell.o {
+            color: #000000;
+        }
+
+        .cell:nth-child(3n) {
+            border-right: none;
+        }
+
+        .cell:nth-child(n+7) {
+            border-bottom: none;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 30px;
+            font-size: 1em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .reset-btn:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic-Tac-Toe: Human vs AI</h1>
+        <div class="status" id="status">Loading...</div>
+        <div class="board" id="board"></div>
+        <button class="reset-btn" id="resetBtn" onclick="resetGame()">Reset Game</button>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        // API base URL - automatically detects localhost vs production
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8000'
+            : 'https://web-production-d29a1.up.railway.app';
+
+        let currentGameId = null;
+        let userPlayer = null;
+        let aiPlayer = null;
+
+        // Create board UI
+        function createBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.onclick = () => handleCellClick(i, j);
+                    board.appendChild(cell);
+                }
+            }
+        }
+
+        // Update display with game state
+        function updateDisplay(gameState) {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                const row = Math.floor(index / 3);
+                const col = index % 3;
+                const value = gameState.board[row][col];
+                cell.textContent = value === ' ' ? '' : value;
+                cell.className = 'cell';
+                if (value === 'X') {
+                    cell.classList.add('x');
+                } else if (value === 'O') {
+                    cell.classList.add('o');
+                }
+                if (value !== ' ' || gameState.game_over) {
+                    cell.classList.add('disabled');
+                }
+            });
+
+            // Update status
+            const statusEl = document.getElementById('status');
+            if (gameState.status.includes('win') || gameState.status.includes('tie')) {
+                statusEl.textContent = gameState.status;
+            } else {
+                const playerColor = userPlayer === 'X' ? '#FF0000' : '#000000';
+                statusEl.innerHTML = `Your turn (You are <span style="color: ${playerColor}; font-weight: bold;">${userPlayer}</span>)`;
+            }
+
+            // Clear error
+            document.getElementById('error').textContent = '';
+        }
+
+        // Handle cell click
+        async function handleCellClick(row, col) {
+            if (!currentGameId) {
+                document.getElementById('error').textContent = 'No game active. Please reset the game.';
+                return;
+            }
+
+            const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+            if (cell.classList.contains('disabled')) return;
+
+            // Disable cell while processing
+            cell.classList.add('disabled');
+            const originalCursor = cell.style.cursor;
+            cell.style.cursor = 'wait';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/game/${currentGameId}/move`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ row, col }),
+                });
+
+                if (!response.ok) {
+                    let errorMsg = 'Move failed';
+                    try {
+                        const error = await response.json();
+                        errorMsg = error.detail || errorMsg;
+                    } catch (e) {
+                        errorMsg = `HTTP ${response.status}: ${response.statusText}`;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                const gameState = await response.json();
+                updateDisplay(gameState);
+            } catch (error) {
+                // Re-enable cell on error
+                cell.classList.remove('disabled');
+                cell.style.cursor = originalCursor;
+                
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    document.getElementById('error').textContent = `Cannot connect to API at ${API_BASE_URL}. Make sure the backend is running.`;
+                } else {
+                    document.getElementById('error').textContent = `Error: ${error.message}`;
+                }
+                console.error('Error making move:', error);
+            }
+        }
+
+        // Reset/Start new game
+        async function resetGame() {
+            const resetBtn = document.getElementById('resetBtn');
+            resetBtn.disabled = true;
+            document.getElementById('status').textContent = 'Starting new game...';
+            document.getElementById('error').textContent = '';
+            
+            // Create the board cells first
+            createBoard();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/game/new`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    let errorMsg = 'Failed to create new game';
+                    try {
+                        const error = await response.json();
+                        errorMsg = error.detail || errorMsg;
+                    } catch (e) {
+                        errorMsg = `HTTP ${response.status}: ${response.statusText}`;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                const gameState = await response.json();
+                currentGameId = gameState.game_id;
+                userPlayer = gameState.user_player;
+                aiPlayer = gameState.ai_player;
+
+                updateDisplay(gameState);
+            } catch (error) {
+                let errorMessage = '';
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage = `Cannot connect to API at ${API_BASE_URL}. `;
+                    errorMessage += 'Make sure the backend is running. ';
+                    errorMessage += 'Run: python api.py';
+                } else {
+                    errorMessage = `Error: ${error.message}`;
+                }
+                document.getElementById('error').textContent = errorMessage;
+                document.getElementById('status').textContent = 'Error loading game';
+                console.error('Error starting game:', error);
+                console.log('API URL:', API_BASE_URL);
+            } finally {
+                resetBtn.disabled = false;
+            }
+        }
+
+        // Initialize board and game on page load
+        createBoard();
+        resetGame();
+    </script>
+</body>
+</html>
