@@ -385,7 +385,8 @@ section {
 .experience-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  row-gap: 1.5rem;
+  column-gap: 1.5rem;
 }
 
 .education-card,
@@ -664,6 +665,15 @@ footer {
 
   .hero-name {
     font-size: 4rem;
+  }
+
+  .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
+
+  .experience-card:first-child {
+    grid-column: 1 / -1;
   }
 }
 
