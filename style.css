@@ -213,7 +213,7 @@ nav {
 .hero-image {
   width: 100%;
   max-width: 500px;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   box-shadow: var(--shadow-md);
 }
 
@@ -478,6 +478,40 @@ section {
 
 .experience-item {
   margin-bottom: 0;
+}
+
+.experience-featured {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.experience-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  border-radius: 1rem;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-white);
+}
+
+.experience-logo {
+  width: 100%;
+  height: 100%;
+  max-width: 260px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 1rem;
+  border: 1px solid var(--border-gray);
+  box-shadow: var(--shadow-sm);
+}
+
+.experience-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .experience-header,
@@ -783,6 +817,11 @@ footer {
 
   .experience-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .experience-featured {
+    grid-template-columns: minmax(160px, 240px) 1fr;
+    align-items: stretch;
   }
 
   .contact-grid {
