@@ -499,8 +499,7 @@ section {
 .experience-logo {
   width: 100%;
   height: 100%;
-  max-width: 260px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
   border-radius: 1rem;
