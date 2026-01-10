@@ -785,6 +785,12 @@ footer {
   }
 }
 
+@media (max-width: 899px) {
+  .experience-featured {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (min-width: 768px) {
   .nav-links {
     display: flex;
@@ -830,11 +836,6 @@ footer {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .experience-featured {
-    grid-template-columns: minmax(160px, 240px) 1fr;
-    align-items: stretch;
-  }
-
   .contact-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -855,6 +856,11 @@ footer {
 
   .experience-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .experience-featured {
+    grid-template-columns: minmax(160px, 240px) 1fr;
+    align-items: stretch;
   }
 
   .experience-card:first-child {
