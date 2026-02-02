@@ -97,19 +97,81 @@ function stopDrawing(e) {
     }
 }
 
-// Get pixel data from canvas
+// Get pixel data from canvas - with proper MNIST preprocessing
 function getPixelData() {
-    // Create offscreen canvas at 28x28
-    const offscreen = document.createElement('canvas');
-    offscreen.width = 28;
-    offscreen.height = 28;
-    const offCtx = offscreen.getContext('2d');
+    // First, get the image data from the main canvas
+    const mainImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const mainPixels = mainImageData.data;
 
-    // Draw scaled down version
-    offCtx.drawImage(canvas, 0, 0, 28, 28);
+    // Find bounding box of the drawing
+    let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+
+    for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+            const i = (y * canvas.width + x) * 4;
+            const gray = (mainPixels[i] + mainPixels[i + 1] + mainPixels[i + 2]) / 3;
+            // If pixel is dark (part of the stroke)
+            if (gray < 250) {
+                minX = Math.min(minX, x);
+                minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x);
+                maxY = Math.max(maxY, y);
+            }
+        }
+    }
+
+    // Add padding
+    const padding = 20;
+    minX = Math.max(0, minX - padding);
+    minY = Math.max(0, minY - padding);
+    maxX = Math.min(canvas.width, maxX + padding);
+    maxY = Math.min(canvas.height, maxY + padding);
+
+    const boxWidth = maxX - minX;
+    const boxHeight = maxY - minY;
+
+    if (boxWidth <= 0 || boxHeight <= 0) {
+        return new Array(784).fill(0);
+    }
+
+    // Create offscreen canvas for the cropped digit
+    const cropCanvas = document.createElement('canvas');
+    const cropSize = Math.max(boxWidth, boxHeight);
+    cropCanvas.width = cropSize;
+    cropCanvas.height = cropSize;
+    const cropCtx = cropCanvas.getContext('2d');
+
+    // Fill with white (MNIST background after inversion will be black)
+    cropCtx.fillStyle = 'white';
+    cropCtx.fillRect(0, 0, cropSize, cropSize);
+
+    // Center the digit in the square canvas
+    const offsetX = (cropSize - boxWidth) / 2;
+    const offsetY = (cropSize - boxHeight) / 2;
+    cropCtx.drawImage(canvas, minX, minY, boxWidth, boxHeight, offsetX, offsetY, boxWidth, boxHeight);
+
+    // Now scale to 20x20 (MNIST digits are typically 20x20 centered in 28x28)
+    const scaleCanvas = document.createElement('canvas');
+    scaleCanvas.width = 20;
+    scaleCanvas.height = 20;
+    const scaleCtx = scaleCanvas.getContext('2d');
+    scaleCtx.drawImage(cropCanvas, 0, 0, 20, 20);
+
+    // Create final 28x28 canvas with digit centered
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = 28;
+    finalCanvas.height = 28;
+    const finalCtx = finalCanvas.getContext('2d');
+
+    // Fill with white
+    finalCtx.fillStyle = 'white';
+    finalCtx.fillRect(0, 0, 28, 28);
+
+    // Draw 20x20 digit centered (4 pixel margin on each side)
+    finalCtx.drawImage(scaleCanvas, 4, 4);
 
     // Get pixel data
-    const imageData = offCtx.getImageData(0, 0, 28, 28);
+    const imageData = finalCtx.getImageData(0, 0, 28, 28);
     const pixels = [];
 
     // Convert to grayscale and invert (MNIST is white digit on black background)
