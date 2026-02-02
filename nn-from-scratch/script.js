@@ -20,7 +20,7 @@ function initCanvas() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = 'black';
-    ctx.lineWidth = 20;
+    ctx.lineWidth = 15;  // Thinner stroke to better match MNIST
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 }
@@ -172,7 +172,7 @@ function getPixelData() {
 
     // Get pixel data
     const imageData = finalCtx.getImageData(0, 0, 28, 28);
-    const pixels = [];
+    let pixels = [];
 
     // Convert to grayscale and invert (MNIST is white digit on black background)
     for (let i = 0; i < imageData.data.length; i += 4) {
@@ -184,7 +184,37 @@ function getPixelData() {
         pixels.push(255 - gray);
     }
 
+    // Apply simple blur to smooth edges (MNIST has anti-aliased digits)
+    pixels = applyBlur(pixels, 28, 28);
+
     return pixels;
+}
+
+// Simple 3x3 gaussian blur to smooth edges
+function applyBlur(pixels, width, height) {
+    const kernel = [
+        [1, 2, 1],
+        [2, 4, 2],
+        [1, 2, 1]
+    ];
+    const kernelSum = 16;
+    const result = new Array(pixels.length).fill(0);
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            let sum = 0;
+            for (let ky = -1; ky <= 1; ky++) {
+                for (let kx = -1; kx <= 1; kx++) {
+                    const px = Math.min(Math.max(x + kx, 0), width - 1);
+                    const py = Math.min(Math.max(y + ky, 0), height - 1);
+                    sum += pixels[py * width + px] * kernel[ky + 1][kx + 1];
+                }
+            }
+            result[y * width + x] = sum / kernelSum;
+        }
+    }
+
+    return result;
 }
 
 // Send prediction request
