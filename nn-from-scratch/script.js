@@ -1,5 +1,5 @@
-// API endpoint - update this with your Railway URL after deployment
-const API_URL = 'https://nn-from-scratch-production.up.railway.app';
+// API endpoint - Railway backend
+const API_URL = 'https://web-production-7ec35.up.railway.app';
 
 // Canvas setup
 const canvas = document.getElementById('drawCanvas');
