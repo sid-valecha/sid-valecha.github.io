@@ -773,17 +773,8 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 767px) {
-  .nav-right {
-    gap: 1rem;
-  }
-
   .nav-links {
-    display: flex;
-    gap: 0.75rem;
-  }
-
-  .nav-links a {
-    font-size: 0.8rem;
+    display: none;
   }
 
   .experience-header,
