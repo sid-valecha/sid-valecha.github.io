@@ -299,6 +299,11 @@ section {
   object-fit: cover;
 }
 
+.project-image-praetor {
+  object-fit: cover;
+  object-position: center 30%;
+}
+
 .project-content {
   padding: 1.5rem;
 }
