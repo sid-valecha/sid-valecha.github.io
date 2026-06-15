@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" preserveAspectRatio="none">
+  <rect width="1200" height="675" fill="#1e293b"/>
+  <rect x="40" y="40" width="1120" height="595" fill="#334155" stroke="#94a3b8" stroke-width="4" rx="18" ry="18"/>
+  <text x="600" y="320" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="52" fill="#f1f5f9">
+    CC Plugin Codex
+  </text>
+  <text x="600" y="380" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="28" fill="#cbd5e1">
+    Add project image: assets/cc-plugin-codex-cover.jpg (or .png/.webp)
+  </text>
+</svg>

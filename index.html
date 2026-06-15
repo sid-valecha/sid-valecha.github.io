@@ -188,30 +188,87 @@
         <!-- Project 1 -->
         <div class="project-card">
           <img
-            src="assets/stock-cover.jpg"
-            alt="Ticker Talk AI-powered stock analysis"
+            src="assets/praetor-cover.svg"
+            alt="Praetor generic coding harness"
             class="project-image"
           />
           <div class="project-content">
-            <h3 class="project-title">Ticker Talk: Talk to your stocks!</h3>
+            <h3 class="project-title">Praetor</h3>
             <p class="project-description">
-              AI-powered natural language stock analysis app that turns queries like “forecast AAPL for 7 days” into
-              full technical analysis. Computes indicators and ARIMA forecasts in Python, generates charts,
-              and adds AI-generated explanations with guardrails. Built with FastAPI + Next.js and optimized with caching.
+              A local-first orchestration harness for coding agents, built as the trust gate around autonomous execution.
+              It queues scoped tasks, routes them through Claude Code or Codex, verifies outputs with real commands,
+              and requires an adversarial reviewer to approve before work is marked ready.
+              It supports parallel git worktrees, durable run history, bounded retries, and reviewer findings injection
+              so each rerun learns from prior checks instead of repeating blind.
             </p>
             <div class="project-tags">
-              <span class="project-tag">Time Series</span>
-              <span class="project-tag">Forecasting</span>
-              <span class="project-tag">ARIMA</span>
-              <span class="project-tag">Natural Language Interface</span>
-              <span class="project-tag">Caching Strategy</span>
+              <span class="project-tag">Agent Orchestration</span>
+              <span class="project-tag">Git Worktrees</span>
+              <span class="project-tag">Adversarial Review</span>
+              <span class="project-tag">Developer Tools</span>
             </div>
             <div class="project-buttons">
-              <a href="https://sidvalecha.com/ticker-talk" class="btn-demo" target="_blank">
-                <i class="fas fa-external-link-alt"></i> Demo
-              </a>
-              <a href="https://github.com/sid-valecha/ticker-talk" class="btn-code" target="_blank">
+              <a href="https://github.com/sid-valecha/praetor" class="btn-code" target="_blank">
                 <i class="fab fa-github"></i> Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+          <img
+            src="assets/cc-plugin-codex-cover.svg"
+            alt="Claude Code plugin for Codex"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">CC Plugin Codex</h3>
+            <p class="project-description">
+              Reverse engineered OpenAI's Claude Code plugin pattern and rebuilt it so Codex can execute planning,
+              design, and adversarial review while Claude Code does review-heavy work.
+              I use this to play to model strengths: Codex for hands-on execution, Claude for architecture and critique,
+              with tracked job history and permission-aware handoffs between agents.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Model Orchestration</span>
+              <span class="project-tag">Planning</span>
+              <span class="project-tag">Adversarial Review</span>
+              <span class="project-tag">Plugin</span>
+            </div>
+            <div class="project-buttons">
+              <a href="https://github.com/sid-valecha/cc-plugin-codex" class="btn-code" target="_blank">
+                <i class="fab fa-github"></i> Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card">
+          <img
+            src="assets/stock-cover.jpg"
+            alt="Sonorus Labs AI-powered music assistant"
+            class="project-image"
+          />
+          <div class="project-content">
+            <h3 class="project-title">Sonorus Labs</h3>
+            <p class="project-description">
+              Built a full GenAI music product from scratch, solo.
+              Converts natural-language prompts into theory-constrained chord progressions and MIDI output,
+              shipping end-to-end full-stack experience in FastAPI, Next.js, and Supabase.
+              The system runs deterministic generation pipelines with sub-second inference, and I built every layer from product surface to backend and deployment.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Generative AI</span>
+              <span class="project-tag">Music Theory</span>
+              <span class="project-tag">FastAPI</span>
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">Supabase</span>
+            </div>
+            <div class="project-buttons">
+              <a href="https://sonorus-labs.com" class="btn-demo" target="_blank">
+                <i class="fas fa-external-link-alt"></i> Demo
               </a>
             </div>
           </div>
