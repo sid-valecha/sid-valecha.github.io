@@ -38,17 +38,19 @@
       <div class="hero-content">
         <!-- <p class="hero-greeting">Hello, I'm</p> -->
         <h1 class="hero-name">Sid Valecha</h1>
-        <h2 class="hero-title">Machine Learning Engineer and Data Scientist</h2>
+        <h2 class="hero-title">AI Engineer | Building Agent-Oriented Developer Systems</h2>
         <p class="hero-description">
-          I am a recent graduate from the University of Wisconsin–Madison, passionate about the intersection of AI and music, and exploring AI as a tool in the creative process.<br>
-          Currently working on 
-          <a href="https://sonorus-labs.com" target="_blank" rel="noopener" style="color: var(--accent-green); text-decoration: none; display:inline-flex; align-items:center; gap:0.1em;">
+          Designing and shipping AI systems for creative and software workflows, from
+          <a href="https://github.com/sid-valecha/praetor" target="_blank" rel="noopener" style="color: var(--accent-green); text-decoration: underline; text-underline-offset: 3px; font-weight: 600;">
+            Praetor
+          </a>
+          's Trust-Gated Agent Orchestration-Harness to open-source
+          <a href="https://github.com/sid-valecha/cc-plugin-codex" target="_blank" rel="noopener" style="color: var(--accent-green); text-decoration: underline; text-underline-offset: 3px; font-weight: 600;">
+            Claude Code Plugin for Codex
+          </a>.<br>
+          Also building
+          <a href="https://sonorus-labs.com" target="_blank" rel="noopener" style="color: var(--accent-green); text-decoration: underline; text-underline-offset: 3px; font-weight: 600;">
             Sonorus Labs
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
-              <g fill="none" fill-rule="evenodd">
-                <path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8"/>
-              </g>
-            </svg>
           </a>
         </p>
         <div class="hero-buttons">
@@ -181,19 +183,25 @@
     <section id="projects">
       <h2 class="section-title">Featured Projects</h2>
       <p class="section-subtitle">
-        Some of my data science projects showcasing my skills in machine learning, data analysis, and visualization.
+        From early data projects to the tools I’m actively shipping today.
       </p>
 
       <div class="projects-grid">
         <!-- Project 1 -->
-        <div class="project-card">
+        <div class="project-card project-active">
           <img
             src="assets/praetor.png"
             alt="Praetor generic coding harness"
             class="project-image project-image-praetor"
           />
           <div class="project-content">
-            <h3 class="project-title">Praetor</h3>
+            <div class="project-title-row">
+              <h3 class="project-title">Praetor</h3>
+              <div class="project-status-inline">
+                <span class="project-status-dot" aria-hidden="true"></span>
+                <span>In active development</span>
+              </div>
+            </div>
             <p class="project-description">
               An open-source, local-first orchestration harness for coding agents, built as the trust gate around autonomous execution.
               It queues scoped tasks, routes them through Claude Code or Codex, verifies outputs with real commands, and enforces
@@ -214,16 +222,22 @@
         </div>
 
         <!-- Project 2 -->
-        <div class="project-card">
+        <div class="project-card project-active">
           <img
             src="assets/plugin.png"
             alt="Claude Code plugin for Codex"
             class="project-image"
           />
           <div class="project-content">
-            <h3 class="project-title">CC Plugin Codex</h3>
+            <div class="project-title-row">
+            <h3 class="project-title">CC Plugin for Codex</h3>
+              <div class="project-status-inline">
+                <span class="project-status-dot" aria-hidden="true"></span>
+                <span>In active development</span>
+              </div>
+            </div>
             <p class="project-description">
-              Reverse engineered OpenAI's Claude Code plugin pattern and rebuilt it so I can route work between Codex and Claude.
+              Reverse engineered OpenAI's Claude Code plugin pattern and rebuilt it as an open-sourced project so I can route work between Codex and Claude.
               I use Claude for planning, design, and adversarial review, and use Codex for implementation across the build flow,
               with tracked job history and permission-aware handoffs between agents.
             </p>
